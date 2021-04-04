@@ -1,0 +1,15 @@
+.icon {
+    width: 30px;
+    height: 30px;
+    filter: invert(100%);
+    margin-bottom: -0.5rem;
+}
+
+.info-small {
+    display: flex;
+    justify-content: flex-end;
+
+    div {
+        text-align: right;
+    }
+}
