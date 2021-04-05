@@ -3,6 +3,7 @@
         *ngFor="let cityWeather of cityWeathers$ | async"
         class="tui-col_xs-12 tui-col_s-6 tui-col_sm-4 tui-col_md-3 tui-col_lg-2"
     >
+        <!-- If we put an entire object it will be repained on an every state update -->
         <city-card [city]="cityWeather.city"></city-card>
     </div>
 </div>

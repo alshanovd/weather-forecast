@@ -1,5 +1,14 @@
 // I've decided to not decompose interfaces of OpenWeather as it uses only once
 
+export interface RawCityWeatherMain {
+    temp: number;
+    feels_like: number;
+    temp_min: number;
+    temp_max: number;
+    pressure: number;
+    humidity: number;
+}
+
 export interface RawCityWeather {
     coord: Coord;
     weather: [
@@ -11,20 +20,13 @@ export interface RawCityWeather {
         }
     ];
     base: string;
-    main: {
-        temp: number;
-        feels_like: number;
-        temp_min: number;
-        temp_max: number;
-        pressure: number;
-        humidity: number;
-    };
+    main: RawCityWeatherMain;
     visibility: number;
     wind: {
         speed: number;
         deg: number;
     };
-    rain: {
+    rain?: {
         [key: string]: number;
     };
     clouds: {
@@ -72,6 +74,9 @@ export interface RawHourWeather {
         icon: string;
     }[];
     pop: number;
+    rain?: {
+        [key: string]: number;
+    };
 }
 
 export interface Coord {

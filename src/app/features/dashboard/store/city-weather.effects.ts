@@ -40,6 +40,7 @@ export class CityWeatherEffects {
                             loadCityWeatherSuccess({ cityWeather })
                         ),
                         catchError((error) => [
+                            // There are no error notifications!
                             loadCityWeatherError({ city, error }),
                         ])
                     )
@@ -69,6 +70,7 @@ export class CityWeatherEffects {
                             return loadWeatherHoursSuccess({ hours, city });
                         }),
                         catchError((error: HttpErrorResponse) => [
+                            // There are no error notifications!
                             loadWeatherHoursError({ error, city }),
                         ])
                     )

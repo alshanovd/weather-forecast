@@ -3,6 +3,8 @@ import { createReducer, on } from '@ngrx/store';
 import { CityWeather } from '../model/city-weather.model';
 import * as CityWeatherActions from './city-weather.actions';
 
+// I prefer to keep store-folders in directories with features rather than put everything into the root folder
+
 export const cityWeathersFeatureKey = 'cityWeathers';
 
 export interface CityWeatherState extends EntityState<CityWeather> {}
@@ -27,6 +29,7 @@ export const reducer = createReducer(
                 changes: {
                     hours: action.hours,
                     opened: true,
+                    loading: false,
                 },
             },
             state
@@ -43,19 +46,16 @@ export const reducer = createReducer(
             state
         )
     ),
-    on(
-        CityWeatherActions.loadWeatherHoursSuccess,
-        CityWeatherActions.loadWeatherHoursError,
-        (state, action) =>
-            cityWeatherAdapter.updateOne(
-                {
-                    id: action.city,
-                    changes: {
-                        loading: false,
-                    },
+    on(CityWeatherActions.loadWeatherHoursError, (state, action) =>
+        cityWeatherAdapter.updateOne(
+            {
+                id: action.city,
+                changes: {
+                    loading: false,
                 },
-                state
-            )
+            },
+            state
+        )
     )
 );
 

@@ -1,6 +1,6 @@
-<h1 class="tui-text_h1 text-center">Weather Forecast</h1>
-<add-city></add-city>
+<h1 class="tui-text_h1 title-text">Weather Forecast</h1>
 
 <div class="tui-container_fullwidth">
+    <add-city (added)="addCity($event)"></add-city>
     <router-outlet></router-outlet>
 </div>

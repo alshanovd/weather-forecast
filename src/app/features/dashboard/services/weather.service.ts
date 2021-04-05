@@ -12,7 +12,9 @@ import {
     RawHourWeather,
 } from '../model/raw-open-weather.model';
 
-// I've decided to not separate this service, however in some cases it make sense
+/** I transform raw Backend data directly in the service, instead of using an adapter
+ *  Classes are esaser to test and use, in more complex projects I usually use adapters
+ */
 
 @Injectable()
 export class WeatherService {

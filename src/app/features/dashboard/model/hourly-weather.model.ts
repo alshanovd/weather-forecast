@@ -1,5 +1,5 @@
-import { Weather } from 'src/app/shared/weather-info/weather.model';
-import { getIcon, getTempWithSign } from './city-weather.model';
+import { Weather } from 'src/app/features/dashboard/model/weather.model';
+import { CityWeather } from './city-weather.model';
 import { RawHourWeather } from './raw-open-weather.model';
 import { Wind } from './wind.model';
 
@@ -14,11 +14,12 @@ export class HourWeather implements Weather {
     };
 
     constructor(rawHourWeather: RawHourWeather) {
-        this.temp = getTempWithSign(rawHourWeather.temp);
+        this.temp = CityWeather.getTempWithSign(rawHourWeather.temp);
         const time = new Date(rawHourWeather.dt * 1000).getHours();
+        // I use ternary operator only for very simple logical assigns
         const AmOrPm = time >= 12 ? 'PM' : 'AM';
         this.time = (time % 12) + ' ' + AmOrPm;
-        this.icon = getIcon(rawHourWeather.weather[0].icon);
+        this.icon = CityWeather.getIcon(rawHourWeather.weather[0].icon);
         this.wind = {
             deg: rawHourWeather.wind_deg,
             speed: Math.round(rawHourWeather.wind_speed),

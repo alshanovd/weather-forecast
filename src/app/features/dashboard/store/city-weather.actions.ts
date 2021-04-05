@@ -1,9 +1,12 @@
 import { createAction, props } from '@ngrx/store';
-import { Update } from '@ngrx/entity';
 import { CityWeather } from '../model/city-weather.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HourWeather } from '../model/hourly-weather.model';
 import { Coord } from '../model/raw-open-weather.model';
+
+/** I've not added remove-item or clean-store actions as it isn't required by the task
+ * However with the NgRx architecture them can be added in a couple minutes
+ */
 
 export const loadCityWeather = createAction(
     '[CityWeather/API] Load CityWeather',

@@ -29,6 +29,7 @@ export class CitiesComponent implements OnInit, OnDestroy {
         this.store.dispatch(loadCityWeathers({ cities: this.cities }));
         this.cityWeathers$ = this.store.pipe(
             select(selectCityWeathers),
+            // Update the list when the city amount is changed
             distinctUntilChanged((x, y) => x.length === y.length),
             takeUntil(this.destroy$)
         );

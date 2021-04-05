@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { GeneralModule } from 'src/app/shared/general/general.module';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 import { NotFoundRoutingModule } from './not-found-routing.module';
-import { NotFoundComponent } from './not-found.component';
 
 @NgModule({
     imports: [GeneralModule, NotFoundRoutingModule],

@@ -1,27 +1,14 @@
-# Forecast
+# Weather Forecast Application
+The App shows the weather in five cities of Europe. By clicking on a pane with the city you see the forecast for some further hours.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.1.
+## Used technologies
+Framework `Angular 11`, Store Manager `NgRx 11`, UI Library [Taiga UI](https://taiga-ui.dev/); Tests `Jasmine & Karma`
 
-## Development server
+## Tested code
+Models, Reducer, Some components.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Folders structure
+There are two root folders: `features` and `shared`. Each `feature` has a module with a router and specific folders for components, services, store, models. Simple `shared` modules with only one component inside have a flat structure.
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Check out The App
+[Weather Forecast App](https://alshanovd.github.io/weather-forecast)
