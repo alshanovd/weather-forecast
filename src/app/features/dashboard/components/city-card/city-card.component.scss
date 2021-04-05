@@ -27,8 +27,27 @@
     cursor: pointer;
 }
 
-.hourly-scroll:last-child {
-    height: 200px;
+.hourly-scroll {
+    height: 0;
     overflow-x: scroll;
     padding: 10px;
+    transition: height 0.5s;
+
+    &_opened {
+        height: 200px;
+    }
+}
+
+.weather-loader {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+
+    .loader tui-loader {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 40px;
+        height: 40px;
+    }
 }

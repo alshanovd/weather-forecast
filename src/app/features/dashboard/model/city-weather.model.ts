@@ -13,6 +13,7 @@ export class CityWeather implements Weather {
     flag: string;
     hours: HourWeather[];
     opened: boolean;
+    loading: boolean = false;
 
     constructor(rawCityWeather: RawCityWeather) {
         this.temp = this.getAvgTemp(rawCityWeather.main);

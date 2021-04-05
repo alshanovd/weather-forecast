@@ -31,6 +31,31 @@ export const reducer = createReducer(
             },
             state
         )
+    ),
+    on(CityWeatherActions.loadWeatherHours, (state, action) =>
+        cityWeatherAdapter.updateOne(
+            {
+                id: action.city,
+                changes: {
+                    loading: true,
+                },
+            },
+            state
+        )
+    ),
+    on(
+        CityWeatherActions.loadWeatherHoursSuccess,
+        CityWeatherActions.loadWeatherHoursError,
+        (state, action) =>
+            cityWeatherAdapter.updateOne(
+                {
+                    id: action.city,
+                    changes: {
+                        loading: false,
+                    },
+                },
+                state
+            )
     )
 );
 

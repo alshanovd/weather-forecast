@@ -2,12 +2,15 @@ import {
     ChangeDetectionStrategy,
     Component,
     Input,
+    OnDestroy,
     OnInit,
 } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { CityWeather } from '../../model/city-weather.model';
-import { Coord } from '../../model/raw-open-weather.model';
 import { loadWeatherHours } from '../../store/city-weather.actions';
+import { selectCityWeather } from '../../store/city-weather.selectors';
 
 @Component({
     selector: 'city-card',
@@ -15,19 +18,33 @@ import { loadWeatherHours } from '../../store/city-weather.actions';
     styleUrls: ['./city-card.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CityCardComponent implements OnInit {
+export class CityCardComponent implements OnInit, OnDestroy {
     @Input()
-    cityWeather: CityWeather | undefined;
+    city: string = '';
+
+    cityWeather$: Observable<CityWeather | undefined> | undefined;
+
+    destroy$: Subject<void> = new Subject();
 
     constructor(private store: Store) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.cityWeather$ = this.store.pipe(
+            select(selectCityWeather, { city: this.city }),
+            takeUntil(this.destroy$)
+        );
+    }
 
-    onOpenChange(): void {
-        if (this.cityWeather?.opened === false) {
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+
+    onOpenChange(cityWeather: CityWeather): void {
+        if (cityWeather.opened === false) {
             const weather = {
-                coord: this.cityWeather?.coord as Coord,
-                city: this.cityWeather?.city as string,
+                coord: cityWeather.coord,
+                city: cityWeather.city,
             };
             this.store.dispatch(loadWeatherHours(weather));
         }
