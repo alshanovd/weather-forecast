@@ -3,24 +3,43 @@
     (click)="onOpenChange(cityWeather)"
     [class.pointer]="!cityWeather.opened"
 >
-    <div class="tui-text_h5 title">
-        {{ cityWeather.city }} <img [src]="cityWeather.flag" />
-    </div>
+    <ng-container *ngIf="cityWeather.loadingCity; else cityTemplate">
+        <tui-loader size="l"></tui-loader>
+    </ng-container>
 
-    <div class="weather-loader">
-        <weather-info [weather]="cityWeather" size="m"></weather-info>
-        <div class="loader">
-            <tui-loader [showLoader]="cityWeather.loading"></tui-loader>
-        </div>
-    </div>
+    <ng-template #cityTemplate>
+        <ng-container
+            *ngIf="cityWeather.errorCityLoading; else successfullyLoaded"
+        >
+            <h3 class="tui-text_h3">Error</h3>
+        </ng-container>
 
-    <div
-        class="hourly-scroll"
-        [class.hourly-scroll_opened]="cityWeather.hours.length"
-    >
-        <div class="hourly-weather" *ngFor="let hour of cityWeather.hours">
-            <span class="time">{{ hour.time }}</span>
-            <weather-info [weather]="hour" size="s"></weather-info>
-        </div>
-    </div>
+        <ng-template #successfullyLoaded>
+            <div class="tui-text_h5 title">
+                {{ cityWeather.city }} <img [src]="cityWeather.flag" />
+            </div>
+
+            <div class="weather-loader">
+                <weather-info [weather]="cityWeather" size="m"></weather-info>
+                <div class="loader">
+                    <tui-loader
+                        [showLoader]="cityWeather.loadingHours"
+                    ></tui-loader>
+                </div>
+            </div>
+
+            <div
+                class="hourly-scroll"
+                [class.hourly-scroll_opened]="cityWeather.hours.length"
+            >
+                <div
+                    class="hourly-weather"
+                    *ngFor="let hour of cityWeather.hours"
+                >
+                    <span class="time">{{ hour.time }}</span>
+                    <weather-info [weather]="hour" size="s"></weather-info>
+                </div>
+            </div>
+        </ng-template>
+    </ng-template>
 </tui-island>

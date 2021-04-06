@@ -20,7 +20,7 @@ import { selectCityWeather } from '../../store/city-weather.selectors';
 })
 export class CityCardComponent implements OnInit, OnDestroy {
     @Input()
-    city: string = '';
+    internalId: number = 0;
 
     cityWeather$: Observable<CityWeather | undefined> | undefined;
 
@@ -30,7 +30,7 @@ export class CityCardComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.cityWeather$ = this.store.pipe(
-            select(selectCityWeather, { city: this.city }),
+            select(selectCityWeather, { internalId: this.internalId }),
             takeUntil(this.destroy$)
         );
     }
@@ -44,7 +44,7 @@ export class CityCardComponent implements OnInit, OnDestroy {
         if (cityWeather.opened === false) {
             const weather = {
                 coord: cityWeather.coord,
-                city: cityWeather.city,
+                internalId: cityWeather.internalId,
             };
             this.store.dispatch(loadWeatherHours(weather));
         }

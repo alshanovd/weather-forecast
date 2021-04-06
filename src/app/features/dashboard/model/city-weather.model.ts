@@ -7,29 +7,29 @@ import { Wind } from './wind.model';
  *  to use and test
  */
 export class CityWeather implements Weather {
-    coord: Coord;
-    city: string;
-    temp: string;
-    icon: string;
-    wind: Wind;
-    flag: string;
-    hours: HourWeather[];
-    opened: boolean;
-    loading: boolean = false; // using when we uploading hours
+    id: number = 0;
+    internalId: number = 0; // Uses for creating an empty entity, to update in the future
+    coord: Coord = { lat: 0, lon: 0 };
+    city: string = '';
+    temp: string = '';
+    icon: string = '';
+    wind: Wind = { deg: 0, speed: 0 };
+    flag: string = '';
+    hours: HourWeather[] = [];
+    opened: boolean = false;
+    loadingHours: boolean = false; // using when we are uploading city
+    loadingCity: boolean = true; // using when we are uploading hours
+    errorCityLoading: boolean = false;
 
-    constructor(rawCityWeather: RawCityWeather) {
-        this.temp = CityWeather.getAvgTemp(rawCityWeather.main);
-        // I don't have any idea how many elements there are might be in the weather array.
-        this.icon = CityWeather.getIcon(rawCityWeather.weather[0].icon);
-        this.wind = {
-            speed: Math.round(rawCityWeather.wind.speed),
-            deg: rawCityWeather.wind.deg,
-        };
-        this.flag = CityWeather.getFlag(rawCityWeather.sys.country);
-        this.city = rawCityWeather.name;
-        this.coord = { ...rawCityWeather.coord };
-        this.hours = [];
-        this.opened = false;
+    constructor(raw: Partial<RawCityWeather> = {}) {
+        const rawCityWeather = raw as RawCityWeather;
+        this.internalId = Math.random();
+
+        if (!rawCityWeather.id) {
+            return;
+        }
+
+        this.fillEntity(rawCityWeather);
     }
 
     static getTempWithSign(temperature: number): string {
@@ -65,5 +65,23 @@ export class CityWeather implements Weather {
     static getFlag(country: string): string {
         // Obviously, it is better to keep flags locally as it is more secure
         return `https://www.countryflags.io/${country.toLocaleLowerCase()}/flat/24.png`;
+    }
+
+    private fillEmptyEntity(): void {}
+
+    private fillEntity(rawCityWeather: RawCityWeather): void {
+        this.id = rawCityWeather.id;
+        this.temp = CityWeather.getAvgTemp(rawCityWeather.main);
+        // I don't have any idea how many elements there are might be in the weather array.
+        this.icon = CityWeather.getIcon(rawCityWeather.weather[0].icon);
+        this.wind = {
+            speed: Math.round(rawCityWeather.wind.speed),
+            deg: rawCityWeather.wind.deg,
+        };
+        this.flag = CityWeather.getFlag(rawCityWeather.sys.country);
+        this.city = rawCityWeather.name;
+        this.coord = { ...rawCityWeather.coord };
+        this.hours = [];
+        this.opened = false;
     }
 }

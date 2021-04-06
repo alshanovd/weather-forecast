@@ -13,6 +13,16 @@ export const loadCityWeather = createAction(
     props<{ city: string }>()
 );
 
+export const loadCityWeatherRequest = createAction(
+    '[CityWeather/API] Load CityWeather Request',
+    props<{ city: string; emptyCityWeather: CityWeather }>()
+);
+
+export const addEmptyCityWeather = createAction(
+    '[CityWeather/API] Add Empty CityWeather',
+    props<{ cityWeather: CityWeather }>()
+);
+
 export const loadCityWeatherSuccess = createAction(
     '[CityWeather/API] Load CityWeather Success',
     props<{ cityWeather: CityWeather }>()
@@ -20,7 +30,7 @@ export const loadCityWeatherSuccess = createAction(
 
 export const loadCityWeatherError = createAction(
     '[CityWeather/API] Load CityWeather Error',
-    props<{ city: string; error: HttpErrorResponse }>()
+    props<{ internalId: number; error: HttpErrorResponse }>()
 );
 
 export const loadCityWeathers = createAction(
@@ -30,15 +40,15 @@ export const loadCityWeathers = createAction(
 
 export const loadWeatherHours = createAction(
     '[CityWeather/API] Load WeatherHours',
-    props<{ coord: Coord; city: string }>()
+    props<{ coord: Coord; internalId: number }>()
 );
 
 export const loadWeatherHoursSuccess = createAction(
     '[CityWeather/API] Load WeatherHours Success',
-    props<{ hours: HourWeather[]; city: string }>()
+    props<{ hours: HourWeather[]; internalId: number }>()
 );
 
 export const loadWeatherHoursError = createAction(
     '[CityWeather/API] Load WeatherHours Error',
-    props<{ city: string; error: HttpErrorResponse }>()
+    props<{ internalId: number; error: HttpErrorResponse }>()
 );

@@ -13,8 +13,8 @@ export const selectCityWeather = createSelector(
     featureSelector,
     (
         cities: fromReducer.CityWeatherState,
-        props: { city: string }
-    ): CityWeather | undefined => cities.entities[props.city]
+        props: { internalId: number }
+    ): CityWeather | undefined => cities.entities[props.internalId]
 );
 
 export const selectCityWeathers = createSelector(

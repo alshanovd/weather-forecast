@@ -7,6 +7,7 @@ import {
     ofType,
 } from '@ngrx/effects';
 import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
+import { CityWeather } from '../model/city-weather.model';
 import { HourWeather } from '../model/hourly-weather.model';
 import { WeatherService } from '../services/weather.service';
 import {
@@ -17,6 +18,7 @@ import {
     loadWeatherHours,
     loadWeatherHoursSuccess,
     loadWeatherHoursError,
+    loadCityWeatherRequest,
 } from './city-weather.actions';
 
 @Injectable()
@@ -24,26 +26,51 @@ export class CityWeatherEffects {
     getCityWeather$ = this.getCityWeatherFn$();
     getCityWeathers$ = this.getCityWeathersFn$();
     getWeatherHours$ = this.getWeatherHoursFn$();
+    createEmptyCityWeather$ = this.createEmptyCityWeatherFn$();
 
     constructor(
         private actions$: Actions,
         private weatherService: WeatherService
     ) {}
 
-    private getCityWeatherFn$(): CreateEffectMetadata {
+    private createEmptyCityWeatherFn$(): CreateEffectMetadata {
         return createEffect(() =>
             this.actions$.pipe(
                 ofType(loadCityWeather),
-                concatMap(({ city }: { city: string }) =>
-                    this.weatherService.getCityWeather(city).pipe(
-                        map((cityWeather) =>
-                            loadCityWeatherSuccess({ cityWeather })
-                        ),
-                        catchError((error) => [
-                            // There are no error notifications!
-                            loadCityWeatherError({ city, error }),
-                        ])
-                    )
+                switchMap(({ city }: { city: string }) => {
+                    const emptyCityWeather = new CityWeather();
+                    return [loadCityWeatherRequest({ city, emptyCityWeather })];
+                })
+            )
+        );
+    }
+
+    private getCityWeatherFn$(): CreateEffectMetadata {
+        return createEffect(() =>
+            this.actions$.pipe(
+                ofType(loadCityWeatherRequest),
+                concatMap(
+                    ({
+                        city,
+                        emptyCityWeather,
+                    }: {
+                        city: string;
+                        emptyCityWeather: CityWeather;
+                    }) =>
+                        this.weatherService.getCityWeather(city).pipe(
+                            map((cityWeather) => {
+                                cityWeather.internalId =
+                                    emptyCityWeather.internalId;
+                                return loadCityWeatherSuccess({ cityWeather });
+                            }),
+                            catchError((error) => [
+                                // There are no error notifications!
+                                loadCityWeatherError({
+                                    internalId: emptyCityWeather.internalId,
+                                    error,
+                                }),
+                            ])
+                        )
                 )
             )
         );
@@ -64,14 +91,17 @@ export class CityWeatherEffects {
         return createEffect(() =>
             this.actions$.pipe(
                 ofType(loadWeatherHours),
-                switchMap(({ coord, city }) =>
+                switchMap(({ coord, internalId }) =>
                     this.weatherService.getWeatherHours(coord).pipe(
                         map((hours: HourWeather[]) => {
-                            return loadWeatherHoursSuccess({ hours, city });
+                            return loadWeatherHoursSuccess({
+                                hours,
+                                internalId,
+                            });
                         }),
                         catchError((error: HttpErrorResponse) => [
                             // There are no error notifications!
-                            loadWeatherHoursError({ error, city }),
+                            loadWeatherHoursError({ error, internalId }),
                         ])
                     )
                 )
