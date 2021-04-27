@@ -64,6 +64,6 @@ export class CityWeather implements Weather {
 
     static getFlag(country: string): string {
         // Obviously, it is better to keep flags locally as it is more secure
-        return `https://www.countryflags.io/${country.toLocaleLowerCase()}/flat/24.png`;
+        return `https://flagcdn.com/w80/${country.toLocaleLowerCase()}.png`;
     }
 }

@@ -21,6 +21,11 @@
 .title {
     display: flex;
     justify-content: space-between;
+
+    .flag {
+        height: 100%;
+        width: 45px;
+    }
 }
 
 .pointer {
